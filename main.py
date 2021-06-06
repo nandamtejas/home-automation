@@ -16,6 +16,71 @@ from functools import partial
 
 
 # for permissions https://developer.android.com/reference/android/Manifest.permission
+
+all_leds_on = ["turn on all led's","turn on all led","turn all on","turn on all","all on","alone","turn everything on","turn on everything"]
+all_leds_off =  ["turn off all led's","turn off all led","turn of all led","turn off all","all off","off all","all of","of all","turn everything off","turn everything of","turn off everything","turn of everything"]
+only_red_on = ['turn on ted led','turn on braid led','turn on bread led','only friend led','only red led','only read led','only red','only read','led red','led red on','red one','red wine','red on','red dawn','red color led on','turn on the red color one','turn on red led']
+reds = ['ready', 'ted','braid','read','brad','trade','frad','fred','criag','tried','play','red','trade','good','did','dead','friend','our tv','turn','rent','threatened','mad','bread']
+greens = ['green','cream','dream']
+blues = ['blue','glue','clue']
+for r in reds:
+    if not 'turn on '+r+' led' in only_red_on: only_red_on.append('turn on '+r+' led')
+    if not 'turn '+r+' on' in only_red_on: only_red_on.append('turn '+r+' on')
+    if not 'turn '+r+' led on' in only_red_on: only_red_on.append('turn '+r+' led on')
+    if not 'only '+r+' led on' in only_red_on: only_red_on.append('only '+r+' led on')
+    if not r+' led only' in only_red_on: only_red_on.append(r+' led only')
+
+only_red_off = []
+for a in only_red_on:
+    if ' on ' in a:
+        only_red_off.append(' off '.join(a.split(" on ")))
+    elif a.endswith(' on'):
+        only_red_off.append(' off '.join(a.split(" on")))
+    elif a.startswith('on '):
+        only_red_off.append('off '.join(a.split("on ")))
+    else:
+        only_red_off.append('off ' + a)
+        only_red_off.append(a + ' off')
+only_green_on = ['green','cream','only cream','only cream on','turn on cream led','only green on','only green led','only green','turn on green led','turn only green led','green on','green led','green led on','led green']
+for r in greens:
+    if not 'turn on '+r+' led' in only_green_on: only_green_on.append('turn on '+r+' led')
+    if not 'turn '+r+' on' in only_green_on: only_green_on.append('turn '+r+' on')
+    if not 'turn '+r+' led on' in only_green_on: only_green_on.append('turn '+r+' led on')
+    if not 'only '+r+' led on' in only_green_on: only_green_on.append('only '+r+' led on')
+    if not r+' led only' in only_green_on: only_green_on.append(r+' led only')
+
+only_green_off = []
+for a in only_green_on:
+    if ' on ' in a:
+        only_green_off.append(' off '.join(a.split(" on ")))
+    elif a.endswith(' on'):
+        only_green_off.append(' off '.join(a.split(" on")))
+    elif a.startswith('on '):
+        only_green_off.append('off '.join(a.split("on ")))
+    else:
+        only_green_off.append('off ' + a)
+        only_green_off.append(a + ' off')
+only_blue_on = ['blue','blue on','led blue on','blue color','only blue','only blue on','turn on blue led','turn only blue led','blue one','blue color','on blue']
+for r in blues:
+    if not 'turn on '+r+' led' in only_blue_on: only_blue_on.append('turn on '+r+' led')
+    if not 'turn '+r+' on' in only_blue_on: only_blue_on.append('turn '+r+' on')
+    if not 'turn '+r+' led on' in only_blue_on: only_blue_on.append('turn '+r+' led on')
+    if not 'only '+r+' led on' in only_blue_on: only_blue_on.append('only '+r+' led on')
+    if not r+' led only' in only_blue_on: only_blue_on.append(r+' led only')
+
+only_blue_off = []
+for a in only_blue_on:
+    if ' on ' in a:
+        only_blue_off.append(' off '.join(a.split(" on ")))
+    elif a.endswith(' on'):
+        only_blue_off.append(' off '.join(a.split(" on")))
+    elif a.startswith('on '):
+        only_blue_off.append('off '.join(a.split("on ")))
+    else:
+        only_blue_off.append('off ' + a)
+        only_blue_off.append(a + ' off')
+
+
 kv = '''
 <IconTooltipButton@MDFloatingActionButton+MDTooltip>
 
@@ -33,7 +98,7 @@ ScreenManager:
             specific_text_color: 1,1,1,1
             halign: "center"
             elevation: 100
-            right_action_items: [['bluetooth-connect', lambda x: app.ss()],['bluetooth-off', lambda x: app.ble.BluetoothAdapter().getDefaultAdapter().disable()]]
+            right_action_items: [['bluetooth-connect', lambda x: app.ss()],['bluetooth-off', lambda x: app.ble.BluetoothAdapter.getDefaultAdapter().disable()]]
 
         MDBottomNavigation:
             id: navigation 
@@ -137,7 +202,7 @@ class AndroidBluetoothClass:
     def getAllPairedDevices(self):
         if not self.BluetoothAdapter.getDefaultAdapter().isEnabled():
             self.EnableBluetooth()
-        return [{'Name':device.getName(),'Address':device.getAddress()} for device in self.paired_devices]
+        return [{"Name": device.getName(), "Address": device.getAddress()} for device in self.BluetoothAdapter.getDefaultAdapter().getBondedDevices().toArray()]
 
 
     def __init__(self):
@@ -215,7 +280,24 @@ class Main(Screen):
             app.tap_target_view.stop()
         self.partial_text = '\n'.join(stt.partial_results)
         self.results_text = '\n'.join(stt.results) 
-        see = self.results_text.lower()
+        if self.results_text.lower() in only_red_on:
+            see = 'red'
+        elif self.results_text.lower() in all_leds_on:
+            see = "all"
+        elif self.results_text.lower() in only_green_on:
+            see = "green"
+        elif self.results_text.lower() in only_blue_on:
+            see = "blue"
+        elif self.results_text.lower() in all_leds_off: 
+            see = "all off"
+        elif self.results_text.lower() in only_red_off: 
+            see = "red off"
+        elif self.results_text.lower() in only_green_off: 
+            see = "green off"
+        elif self.results_text.lower() in only_blue_off:
+            see = "blue off" 
+        else:
+            see = self.results_text.lower()
         app.send_data(message=bytes(see.encode('utf-8')))
 
 sm = ScreenManager()
@@ -281,14 +363,19 @@ class TestApp(MDApp):
         self.dialog.dismiss()
     
     
-    def ss(self):   
-        items = [Item(
-            text = device.getName(),
-            secondary_text = device.getAddress(),
-            source = 'bluetooth-connect',
-            on_release = self.connect) for device in self.ble.paired_devices]
+    def ss(self):
         ok_btn = MDRaisedButton(text = "OK", text_color = self.theme_cls.primary_color,on_release=self.close_dialog)
-        self.open_dialogbox(title="Paired Devices", text="Paired Devices",kwargs={'buttons':[ok_btn],'Items':items,'size_hint':(0.8,0.8)})
+        if not self.ble.BluetoothAdapter.getDefaultAdapter().isEnabled():
+            self.ble.EnableBluetooth()   
+            self.open_dialogbox(title="Bluetooth Connection", text="Bluetooth Connection Success",kwargs={'buttons':[ok_btn],'Items':[],'size_hint':(0.8,0.8)})
+            return ''
+        else:
+            items = [Item(
+                text = device.get('Name'),
+                secondary_text = device.get('Address'),
+                source = 'bluetooth-connect',
+                on_release = self.connect) for device in self.ble.getAllPairedDevices()]
+            self.open_dialogbox(title="Paired Devices", text="Paired Devices",kwargs={'buttons':[ok_btn],'Items':items,'size_hint':(0.8,0.8)})
     
     
     def connect(self,instance):
@@ -298,8 +385,8 @@ class TestApp(MDApp):
         
 
     def on_start(self): 
-        request_permissions([Permission.RECORD_AUDIO,Permission.BLUETOOTH,Permission.BLUETOOTH_ADMIN,Permission.ACCESS_FINE_LOCATION])
-        #self.ble.BluetoothAdapter().getDefaultAdapter().enable()
+        request_permissions([Permission.RECORD_AUDIO,Permission.BLUETOOTH,Permission.BLUETOOTH_ADMIN,Permission.ACCESS_FINE_LOCATION,Permission.INTERNET])
+        #self.ble.BluetoothAdapter.getDefaultAdapter().enable()
     
     def on_pause(self):
         return True
