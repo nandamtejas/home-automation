@@ -128,14 +128,14 @@ class AndroidBluetoothClass:
         return DataStream
 
     def EnableBluetooth(self):
-        if not self.BluetoothAdapter().getDefaultAdapter().isEnabled():
-            self.BluetoothAdapter().getDefaultAdapter().enable()
+        if not self.BluetoothAdapter.getDefaultAdapter().isEnabled():
+            self.BluetoothAdapter.getDefaultAdapter().enable()
     
     def DisableBluetooth(self):
-        self.BluetoothAdapter().getDefaultAdapter().disable()
+        self.BluetoothAdapter.getDefaultAdapter().disable()
 
     def getAllPairedDevices(self):
-        if not self.BluetoothAdapter().getDefaultAdapter().isEnabled():
+        if not self.BluetoothAdapter.getDefaultAdapter().isEnabled():
             self.EnableBluetooth()
         return [{'Name':device.getName(),'Address':device.getAddress()} for device in self.paired_devices]
 
