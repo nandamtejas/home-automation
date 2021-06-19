@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = Home Automation Bluetooth Update 
+title = Android Home Automation
 
 # (str) Package name
-package.name = bluetoothhome
+package.name = androidhome123456
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
@@ -28,7 +28,7 @@ source.include_exts = py,png,jpg,kv,atlas
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.2
+version = 0.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -36,7 +36,7 @@ version = 0.2
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd,pyjnius,plyer,python_for_android
+requirements = python3,kivy==2.0.0,kivymd==0.104.1,plyer,pyjnius,python-for-android
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -85,7 +85,7 @@ fullscreen = 1
 android.presplash_color = aqua
 
 # (list) Permissions
-android.permissions = INTERNET,RECORD_AUDIO,BLUETOOTH,BLUETOOTH_ADMIN,ACCESS_FINE_LOCATION
+android.permissions = INTERNET,RECORD_AUDIO,BLUETOOTH,BLUETOOTH_ADMIN
 
 # (int) Target Android API, should be as high as possible.
 #android.api = 27

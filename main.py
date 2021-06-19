@@ -3,6 +3,7 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.taptargetview import MDTapTargetView
@@ -321,6 +322,12 @@ class TestApp(MDApp):
         )
         for t in ["RED","GREEN","BLUE"]:
            self.builder.get_screen("Main").ids.lists.add_widget(ListItemWithSwitch(text=t))
+        request_permissions([
+          Permission.INTERNET,
+          Permission.RECORD_AUDIO,
+          Permission.BLUETOOTH,
+          Permission.BLUETOOTH_ADMIN
+        ])
         return self.builder
 
     def check_send(self,msg,checkbox,value):
@@ -381,12 +388,11 @@ class TestApp(MDApp):
     def connect(self,instance):
         self.close_dialog(instance)
         self.device = instance.text
-        self.ble.getAndroidBluetoothSocket(instance.text)
-        
+        self.ble.getAndroidBluetoothSocket(instance.text)        
 
     def on_start(self): 
-        request_permissions([Permission.RECORD_AUDIO,Permission.BLUETOOTH,Permission.BLUETOOTH_ADMIN,Permission.ACCESS_FINE_LOCATION,Permission.INTERNET])
-        #self.ble.BluetoothAdapter.getDefaultAdapter().enable()
+        #request_permissions([Permission.RECORD_AUDIO,Permission.BLUETOOTH,Permission.BLUETOOTH_ADMIN,Permission.ACCESS_FINE_LOCATION,Permission.INTERNET])
+        self.ble.BluetoothAdapter.getDefaultAdapter().enable()
     
     def on_pause(self):
         return True
