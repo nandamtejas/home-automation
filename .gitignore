@@ -1,0 +1,7 @@
+/venv/
+*.pyc
+*.exe
+
+mini_project_schedule.xlsx
+
+/sources

@@ -4,7 +4,7 @@
 title = Android Home Automation
 
 # (str) Package name
-package.name = androidhome123456
+package.name = androidhomespeech
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
@@ -36,7 +36,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.0.0,kivymd==0.104.1,plyer,pyjnius,python-for-android
+requirements = python3,kivy==2.0.0,plyer,android,pyjnius,kivymd==0.104.1,pykivdroid,Pillow
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -68,7 +68,7 @@ orientation = portrait
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 2.0.0
+osx.kivy_version = 1.9.1
 
 #
 # Android specific
@@ -85,7 +85,7 @@ fullscreen = 1
 android.presplash_color = aqua
 
 # (list) Permissions
-android.permissions = INTERNET,RECORD_AUDIO,BLUETOOTH,BLUETOOTH_ADMIN
+android.permissions = INTERNET,RECORD_AUDIO,BLUETOOTH,BLUETOOTH_ADMIN,ACCESS_FINE_LOCATION
 
 # (int) Target Android API, should be as high as possible.
 #android.api = 27
@@ -213,7 +213,7 @@ android.permissions = INTERNET,RECORD_AUDIO,BLUETOOTH,BLUETOOTH_ADMIN
 #android.uses_library =
 
 # (str) Android logcat filters to use
-#android.logcat_filters = *:S python:D
+android.logcat_filters = *:S python:D
 
 # (bool) Copy library instead of making a libpymodules.so
 #android.copy_libs = 1
